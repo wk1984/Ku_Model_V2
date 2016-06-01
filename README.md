@@ -2,8 +2,8 @@ Analytical Permafrost Model
 
 Calculate Active Layer Thickness (ALT) and Temperature on the Top of Permafrost (TTOP)
 
-The code should be modified.
+The code (V1, March 29, 2016) has been modified to apply matrix calculation to improve effective;
 
 by Kang 
 
-May 25, 2016
+June 1, 2016
