@@ -24,6 +24,37 @@ def Estimate_Snow_Thermal_Parameters(rho_sn):
     return Csn, Ksn
 
 def Read_typical_thermal_parameters(input_file):
+    
+    """ 
+    The function is to import typical thermal parameters of different soil types ;
+    
+    INPUTs:
+            input_file: file contains typical thermal parameters of clay, sand, silt and peat.
+
+    OUTPUTs:
+            Capacity_Clay: heat capacity of clay (J kg-1 C-1) 
+            BDensity_Clay: Bulk density of clay (kg m-3)
+            K_t_Clay     : thermal conductivity of thawed clay (W m-1 C-1)
+            K_f_Clay     : thermal conductivity of frozen clay (W m-1 C-1)
+            
+            Capacity_Silt: heat capacity of silt (J kg-1 C-1) 
+            BDensity_Silt: Bulk density of silt (kg m-3)
+            K_t_Silt     : thermal conductivity of thawed silt (W m-1 C-1)
+            K_f_Silt     : thermal conductivity of frozen silt (W m-1 C-1)
+            
+            Capacity_Sand: heat capacity of sand (J kg-1 C-1) 
+            BDensity_Sand: Bulk density of sand (kg m-3)
+            K_t_Sand     : thermal conductivity of thawed sand (W m-1 C-1)
+            K_f_Sand     : thermal conductivity of frozen sand (W m-1 C-1)
+            
+            Capacity_Peat: heat capacity of peat (J kg-1 C-1) 
+            BDensity_Peat: Bulk density of peat (kg m-3)
+            K_t_Peat     : thermal conductivity of thawed peat (W m-1 C-1)
+            K_f_Peat     : thermal conductivity of frozen peat (W m-1 C-1)
+
+    DEPENDENTs:
+            None 
+    """ 
 
     import numpy as np    
     
@@ -80,6 +111,18 @@ def Estimate_Soil_Heat_Capacity(p_clay, p_sand, p_silt, p_peat, vwc,
             p_silt: percent of silt (%)
             p_peat: percent of peat (%)
             vwc   : volumetric water content (m3 / m3)
+            
+            Capacity_Clay: heat capacity of clay (J kg-1 C-1) 
+            BDensity_Clay: Bulk density of clay (kg m-3)
+            
+            Capacity_Silt: heat capacity of silt (J kg-1 C-1) 
+            BDensity_Silt: Bulk density of silt (kg m-3)
+            
+            Capacity_Sand: heat capacity of sand (J kg-1 C-1) 
+            BDensity_Sand: Bulk density of sand (kg m-3)
+            
+            Capacity_Peat: heat capacity of peat (J kg-1 C-1) 
+            BDensity_Peat: Bulk density of peat (kg m-3)
 
     OUTPUTs:
             Ct: heat capacity of thawed soil (J m-3 C-1) 
@@ -88,8 +131,6 @@ def Estimate_Soil_Heat_Capacity(p_clay, p_sand, p_silt, p_peat, vwc,
     DEPENDENTs:
             None 
     """    
-    
-#    import numpy as np
     
     # Adjust percent of sand, silt, clay and peat ==
     
@@ -135,6 +176,18 @@ def Estimate_Soil_Thermal_Conductivity(p_clay, p_sand, p_silt, p_peat, vwc,
             p_silt: percent of silt (%)
             p_peat: percent of peat (%)
             vwc   : volumetric water content (m3 / m3)
+            
+            K_t_Clay     : thermal conductivity of thawed clay (W m-1 C-1)
+            K_f_Clay     : thermal conductivity of frozen clay (W m-1 C-1)
+            
+            K_t_Silt     : thermal conductivity of thawed silt (W m-1 C-1)
+            K_f_Silt     : thermal conductivity of frozen silt (W m-1 C-1)
+            
+            K_t_Sand     : thermal conductivity of thawed sand (W m-1 C-1)
+            K_f_Sand     : thermal conductivity of frozen sand (W m-1 C-1)
+            
+            K_t_Peat     : thermal conductivity of thawed peat (W m-1 C-1)
+            K_f_Peat     : thermal conductivity of frozen peat (W m-1 C-1)
 
     OUTPUTs:
             Kt: thermal conductivity of thawed soil (W m-1 C-1) 
@@ -187,6 +240,7 @@ def Estimate_Cold_Warm_Season_Length(Ta, Aa):
             tao : period of a year (second)
             tao1: period of cold season; (second)
             tao2: period of warm season; (second)
+            
     DEPENDENTs:
             None 
     """
@@ -233,6 +287,7 @@ def Estimate_Snow_Effect(Ta, Aa, Hsn, Csn, Ksn, rho_sn, tao):
             Ksn: thermal conductivity of snow  (W m-1 C-1)
             rho_sn: snow density (kg m-3).             
             tao : period of a year (second)
+            
     OUTPUTs:
             Tvg : Temperature on the top of vegetation (C)
             Avg : Amplitude of temperature on the top of vegetation (C)
@@ -247,15 +302,12 @@ def Estimate_Snow_Effect(Ta, Aa, Hsn, Csn, Ksn, rho_sn, tao):
     
     K_diffusivity = Ksn/(rho_sn*Csn)   
     
-#    print K_diffusivity
-    
-#    print (1.0 - np.exp(-1.0*Hsn*np.sqrt(np.pi/(tao*K_diffusivity))))
-    
     deta_Tsn = Aa*(1.0 - np.exp(-1.0*Hsn*np.sqrt(np.pi/(tao*K_diffusivity)))); # eq-7, Anisimov et al. 1997
     deta_Asn = 2.0/np.pi*deta_Tsn; # eq-2, Sazonova et al., 2003
     
     # mean annual temperature and amplitude 
     # bellow snow OR top of vegetation
+    
     Tvg = Ta + deta_Tsn;    # Page-129, Sazonova et al., 2003
     Avg = Aa - deta_Asn;    # Page-129, Sazonova et al., 2003
     
@@ -276,6 +328,7 @@ def Estimate_Vegetation_Effect(Tvg, Avg, Hvgf, Hvgt, Dvf, Dvt, tao1, tao2, tao):
             tao : period of a year (second)
             tao1: period of cold season; (second)
             tao2: period of warm season; (second)
+            
     OUTPUTs:
             Tgs : Temperature on the ground surface (C)
             Ags : Amplitude of temperature on the ground surface (C)
@@ -364,14 +417,7 @@ def Calculate_Temperature_Top_PF(Tps_numerator, Kf, Kt, Cf, Ct):
     import numpy as np
    
 #   Calculating the temperature at the top of permafrost :
-                    
-#    if Tps_numerator<=0.0: # It is for PERMAFROST
-#        K_star = Kf;
-#        #print "PERMAFROST"
-#    else:                  # It is for SEASONAL FROZEN GROUND 
-#        K_star = Kt;
-#        #print "SEASONAL FROZEN GROUND"
-    
+                        
     K_star = Kf;
     K_star[np.where(Tps_numerator>0.0)] = Kt;
                
@@ -419,9 +465,7 @@ def Calculate_ALT(Tps_numerator, Tps, Ags, Kf, Kt, Cf, Ct, L, tao):
         +(((2.*Aps*C*Zc+L*Zc)*L*np.sqrt(K*tao/(np.pi*C)))\
         /(2.*Ags*C*Zc + L*Zc +(2.*Aps*C+L)*np.sqrt(K*tao/(np.pi*C)))))\
         /(2.*Aps*C+L);                                                    # Active Layer Thickness, eq-3, Romanovsky et al. 1997
-        
-#    if Tps_numerator>0: # It is seasonal frost depth, not be considered here.
-        
+                
     Zal[np.where(Tps_numerator>0.0)] = -999.99
     Tps[np.where(Tps_numerator>0.0)] = -999.99
     
@@ -436,19 +480,17 @@ def Extract_Soil_Texture(input_lat, input_lon,
     INPUTs:
             input_lat: Latitude;
             input_lon: Longitude;
+            
     OUTPUTs:
             p_clay: percent of clay (%)
             p_sand: percent of sand (%)
             p_silt: percent of silt (%)
-            p_peat: percent of peat (%)             
+            p_peat: percent of peat (%)  
+            
     DEPENDENTs:
             function "Extract_Grid_Value"
+            function "import_ncfile"
     """
-
-#    Clay_file = 'Parameters/T_CLAY.nc4';
-#    Sand_file = 'Parameters/T_SAND.nc4';
-#    Silt_file = 'Parameters/T_SILT.nc4';
-#    Peat_file = 'Parameters/T_OC.nc4';
     
     clay_perc = Extract_Grid_Value(input_lat, input_lon, 
                                    lon_grid, lat_grid, Clay_percent)
@@ -466,15 +508,31 @@ def Extract_Soil_Texture(input_lat, input_lon,
     
 def import_ncfile(input_file, lonname,  latname,  varname):
     
+    """ 
+    The function is to import a whole matrix from NetCDF file
+    
+    INPUTs:
+            input_file: filename of netcdf file;
+            lonname   : name of Longitude in netcdf file;
+            latname   : name of Latitude in netcdf file;
+            varname   : name of variable in netcdf file;
+            
+    OUTPUTs:
+            lon_grid : Array of longitude
+            lat_grid : Array of latitude
+            p_data: whole value (Matrix)   
+                    
+    DEPENDENTs:
+            None 
+    """
+    
     from netCDF4 import Dataset
-    #    import numpy as np
         
-        # Read the nc file 
+    # Read the nc file 
         
     fh = Dataset(input_file, mode='r')
         
-        # Get the lat and lon
-        #   Set the grid size for lat. and lon. (here is 0.5 degree)
+    # Get the lat and lon
         
     lon_grid = fh.variables[lonname][:]; 
     lat_grid = fh.variables[latname][:];
@@ -486,27 +544,23 @@ def import_ncfile(input_file, lonname,  latname,  varname):
 def Extract_Grid_Value(input_lat, input_lon, lon_grid, lat_grid, p_data): 
 
     """ 
-    The function is to extract the grid value from NetCDF file,
+    The function is to extract the grid value from matrix,
     according to input of latitude and longitude;
     
     INPUTs:
             input_lat: Latitude;
             input_lon: Longitude;
-            input_file: grid data file (NetCDF file)
-            lonname: name of longitude in "input_file"
-            latname: name of latitude in "input_file"
-            lon_grid_scale: grid size of longitude
-            lat_grid_scale: grid size of latitude
-            varname: name of variable should be extracted.
+            lon_grid : Array of longitude
+            lat_grid : Array of latitude
+            p_data   : Matrix of data (from NetCDF file)
             
     OUTPUTs:
-            p_data: grid value   
+            q_data: grid value (SINGLE)   
                     
     DEPENDENTs:
             None 
     """
-    
-#    from netCDF4 import Dataset
+        
     import numpy as np
     
     lon_grid_scale = 0.05;
